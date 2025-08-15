@@ -1,15 +1,15 @@
-FROM debian:stretch
+FROM debian:trixie
 MAINTAINER jake@apache.org
 
 ENV LEIN_ROOT true
 ENV DEBIAN_FRONTEND=noninteractive
 
-RUN cat /etc/apt/sources.list
+#RUN cat /etc/apt/sources.list
 RUN apt -q -y update
 
 # to fix bugs when installing openjdk-11-jdk-headless
 # here we need to install jdk first
-RUN apt install -qy openjdk-11-jdk
+RUN apt install -qy openjdk-25-jdk
 
 #
 # Jecci dependencies
@@ -25,7 +25,7 @@ RUN apt install -qy vim \
     gnuplot \
     graphviz \
     dos2unix \
-    openjdk-11-jdk-headless \
+    openjdk-25-jdk-headless \
     libjna-java \
     libssl-dev \
     #for rhizome
@@ -44,8 +44,8 @@ ENV DISPLAY=:0
 COPY jecci/jecci /jecci/jecci/
 # ADD the following to change lein source, if you are in... you know...
 # ADD ./profiles.clj /root/.lein/profiles.clj
-RUN cat /root/.lein/profiles.clj &&\
-    if [ -f /jecci/jecci/project.clj ]; then cd /jecci/jecci && lein install; fi
+#RUN cat /root/.lein/profiles.clj &&\
+RUN    if [ -f /jecci/jecci/project.clj ]; then cd /jecci/jecci && lein install; fi
 COPY jecci /jecci/
 
 ADD ./bashrc /root/.bashrc
